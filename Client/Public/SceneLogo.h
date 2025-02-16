@@ -23,6 +23,7 @@ public:
 private:
 	Engine::UI*			m_pMainLogo;
 	Engine::Button*		m_pStartButton;
+	Engine::Button*		m_pEndButton;
 
 public:
 	static SceneLogo* Create();

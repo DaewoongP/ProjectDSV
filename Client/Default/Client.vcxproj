@@ -157,9 +157,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\public\SceneCharacter.h" />
     <ClInclude Include="..\public\SceneLoading.h" />
     <ClInclude Include="..\public\SceneLogo.h" />
-    <ClInclude Include="..\public\ScenePlay1.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="Client.h" />
@@ -168,9 +168,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\private\SceneCharacter.cpp" />
     <ClCompile Include="..\private\SceneLoading.cpp" />
     <ClCompile Include="..\private\SceneLogo.cpp" />
-    <ClCompile Include="..\private\ScenePlay1.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="Client.cpp" />
