@@ -20,8 +20,6 @@ void Composite::Update()
 	{
 		component.second->Update();
 	}
-
-	__super::Update();
 }
 
 void Composite::AddComponent(const std::wstring& wstrKey, Component* pComponent)

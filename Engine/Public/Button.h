@@ -11,14 +11,22 @@ public: // constructor
 
 public:
 	void Initialize(const std::wstring& wstrTexturePath, const std::wstring& wstrClickTexturePath, _float2 vPos, _float fWidth, _float fHeight);
+	void SetClickFunc(std::function<void()>&& func);
 	virtual void Update() override;
 	// 버튼 클릭 시 호출
 	// Update에서 자동으로 검사합니다.
-	virtual void Click() {}
+	virtual void Click();
+
+public:
+	bool IsClicked() const { return m_bClicked; }
 
 protected:
 	Texture* m_pNormalTexture;
 	Texture* m_pClickTexture;
+
+protected:
+	std::function<void()>	m_ClickFunc;
+	bool					m_bClicked;
 
 public: // handling func
 	static Button* Create(const std::wstring& wstrTexturePath, const std::wstring& wstrClickTexturePath, _float2 vPos, _float fWidth, _float fHeight);

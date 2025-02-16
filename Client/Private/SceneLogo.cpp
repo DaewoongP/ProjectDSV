@@ -22,21 +22,15 @@ void Client::SceneLogo::Initialize()
 		{ 1000.f, 500.f }, 128, 64);
 	Utility::SafeAddRef(m_pStartButton);
 	AddComponent(TEXT("StartButton"), m_pStartButton);
+	m_pStartButton->SetClickFunc([]() {
+		DebugFunc::Text("Enter!");
+		GAME->StartScene(static_cast<_uint>(SceneType::LOADING), Client::SceneLoading::Create(SceneType::PLAY1));
+		});
 }
 
 void SceneLogo::Update()
 {
 	DebugFunc::Text("Scene : Logo", GAME->GetTimeDelta(TEXT("MainTimer")));
-
-	if (m_pMainLogo->IsOnMe())
-		DebugFunc::Text("isonme?", GAME->GetTimeDelta(TEXT("MainTimer")));
-
-	if (GAME->GetDIKeyState(DIK_RETURN, Engine::InputDevice::KEY_DOWN))
-	{
-		DebugFunc::Text("Enter!");
-		GAME->StartScene(static_cast<_uint>(SceneType::LOADING), Client::SceneLoading::Create(SceneType::PLAY1));
-		return;
-	}
 
 	RenderSequence();
 

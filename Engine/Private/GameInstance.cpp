@@ -16,7 +16,7 @@ ComPtr<ID3D11DeviceContext> GameInstance::GetDeviceContext() const { return GRAP
 const D3D11_VIEWPORT& GameInstance::GetViewPort() const { return GRAPHIC->GetViewPort(); }
 
 GameInstance::GameInstance()
-    : m_nCurrentSceneIndex(-1), m_pCurrentScene(nullptr)
+    : m_nCurrentSceneIndex(-1), m_pCurrentScene(nullptr), m_bSceneChanged(false)
 {
 
 }
@@ -38,6 +38,11 @@ HRESULT GameInstance::Initialize(HINSTANCE _hInst, _uint _numLevels, const GRAPH
 
 void GameInstance::Update(_float fTimeDelta)
 {
+    if (m_bSceneChanged)
+    {
+        ChangeScene();
+    }
+
     INPUT->Update();
     
     TIMER->Update(fTimeDelta);
@@ -90,15 +95,20 @@ void GameInstance::AddRenderGroup(RenderManager::RenderType _renderType, Compone
 
 void GameInstance::StartScene(_uint nSceneIndex, Scene* pScene)
 {
+    m_bSceneChanged = true;
+    m_nNextSceneIndex = nSceneIndex;
+    m_pNextScene = pScene;
+}
+
+void GameInstance::ChangeScene()
+{
     Utility::SafeRelease(m_pCurrentScene);
     ClearSceneResources();
 
-    if (nullptr == pScene)
-        return;
+    m_nCurrentSceneIndex = m_nNextSceneIndex;
+    m_pCurrentScene = m_pNextScene;
 
-    m_nCurrentSceneIndex = nSceneIndex;
-    m_pCurrentScene = pScene;
-    m_pCurrentScene->SetSceneIndex(nSceneIndex);
+    m_bSceneChanged = false;
 }
 
 HRESULT GameInstance::ClearSceneResources()

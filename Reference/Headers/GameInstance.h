@@ -57,11 +57,16 @@ public:
 	void StartScene(_uint nSceneIndex, class Scene* pScene);
 
 private:
+	void ChangeScene();
 	HRESULT ClearSceneResources();
 
 private: // Engine Data
 	_int				m_nCurrentSceneIndex;
 	class Scene*		m_pCurrentScene;
+
+	bool				m_bSceneChanged;
+	_int				m_nNextSceneIndex;
+	class Scene*		m_pNextScene;
 
 private:
 	_int2 m_vMousePos;

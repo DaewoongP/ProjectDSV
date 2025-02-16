@@ -6,7 +6,7 @@ USING(Engine)
 
 Button::Button()
     : UI()
-    , m_pNormalTexture(nullptr), m_pClickTexture(nullptr)
+    , m_pNormalTexture(nullptr), m_pClickTexture(nullptr), m_ClickFunc(), m_bClicked(false)
 {
 }
 
@@ -23,21 +23,36 @@ void Button::Initialize(const std::wstring& wstrTexturePath, const std::wstring&
     Utility::SafeAddRef(m_pClickTexture);
 }
 
+void Button::SetClickFunc(std::function<void()>&& func)
+{
+    m_ClickFunc = std::move(func);
+}
+
 void Button::Update()
 {
     if (GAME->GetDIMouseState(InputDevice::DIMK_LBUTTON, InputDevice::KEY_UP) &&
-        IsOnMe())
+        m_bClicked)
     {
-        Click();
         ChangeTexture(m_pNormalTexture);
+
+        if (IsOnMe())
+            Click();
+
+        m_bClicked = false;
     }
     else if (GAME->GetDIMouseState(InputDevice::DIMK_LBUTTON, InputDevice::KEY_DOWN) &&
         IsOnMe())
     {
+        m_bClicked = true;
         ChangeTexture(m_pClickTexture);
     }
 
     __super::Update();
+}
+
+void Button::Click()
+{
+    m_ClickFunc();
 }
 
 Button* Button::Create(const std::wstring& wstrTexturePath, const std::wstring& wstrClickTexturePath, _float2 vPos, _float fWidth, _float fHeight)
