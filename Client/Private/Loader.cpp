@@ -12,17 +12,9 @@ _uint WINAPI Thread_Main(void* _arg)
 	return 0;
 }
 
-Client::Loader::~Loader()
+HRESULT Client::Loader::Initialize(SceneType _sceneType)
 {
-	WaitForSingleObject(mhThread, INFINITE);
-
-	DeleteCriticalSection(&mCriticalSection);
-	CloseHandle(mhThread);
-}
-
-HRESULT Client::Loader::Initialize(LevelType _levelType)
-{
-	mNextLevelType = _levelType;
+	m_eNextSceneType = _sceneType;
 
 	InitializeCriticalSection(&mCriticalSection);
 
@@ -46,12 +38,12 @@ HRESULT Client::Loader::Loading()
 
 	HRESULT	hr = 0;
 
-	switch (mNextLevelType)
+	switch (m_eNextSceneType)
 	{
-	case LevelType::LOGO:
+	case SceneType::LOGO:
 		hr = LoadingForLogo();
 		break;
-	case LevelType::PLAY1:
+	case SceneType::PLAY1:
 		hr = LoadingForPlay1();
 		break;
 	default:
@@ -81,9 +73,17 @@ HRESULT Client::Loader::LoadingForPlay1()
 	return S_OK;
 }
 
-std::unique_ptr<Client::Loader> Client::Loader::Create(LevelType _levelType)
+Client::Loader* Client::Loader::Create(SceneType _sceneType)
 {
-	auto instance = std::make_unique<Client::Loader>();
-	FAILED_CHECK_RETURN_MSG(instance->Initialize(_levelType), nullptr, TEXT("Failed"));
+	auto instance = new Client::Loader();
+	FAILED_CHECK_RETURN_MSG(instance->Initialize(_sceneType), nullptr, TEXT("Failed"));
 	return instance;
+}
+
+void Client::Loader::Free()
+{
+	WaitForSingleObject(mhThread, INFINITE);
+
+	DeleteCriticalSection(&mCriticalSection);
+	CloseHandle(mhThread);
 }

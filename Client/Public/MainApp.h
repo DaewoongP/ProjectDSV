@@ -12,15 +12,11 @@ public:
 
 public:
 	HRESULT Initialize();
-	void Tick(_float _timeDelta);
-	HRESULT Render();
-
-private:
-	ComPtr<ID3D11Device>		mDevice;
-	ComPtr<ID3D11DeviceContext>	mDeviceContext;
+	void Update(_float fTimeDelta);
+	void Render();
 
 public:
-	static std::unique_ptr<MainApp> Create();
+	static MainApp* Create();
 };
 
 END

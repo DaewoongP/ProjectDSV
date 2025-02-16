@@ -1,5 +1,5 @@
 #include "MainApp.h"
-#include "LevelLogo.h"
+#include "SceneLogo.h"
 
 USING(Engine)
 
@@ -13,29 +13,29 @@ HRESULT Client::MainApp::Initialize()
 	graphicDesc.ViewportSizeY = gWinSizeY;
 	graphicDesc.WinMode = GRAPHICDESC::WINMODE::WM_WIN;
 
-	FAILED_RETURN(GAME->Initialize(ghInst, static_cast<_uint>(LevelType::TYPEEND), graphicDesc, mDevice, mDeviceContext), E_FAIL);
-	FAILED_RETURN(GAME->OpenLevel(static_cast<_uint>(LevelType::LOGO), LevelLogo::Create()), E_FAIL);
+	FAILED_RETURN(GAME->Initialize(ghInst, static_cast<_uint>(SceneType::TYPEEND), graphicDesc), E_FAIL);
+	GAME->StartScene(static_cast<_uint>(SceneType::LOGO), SceneLogo::Create());
 
 #ifdef _DEBUG
-	FAILED_RETURN(GAME->AddFont(mDevice, mDeviceContext, TEXT("Font_135"), TEXT("../../Resource/Default/Fonts/135ex.spritefont")), E_FAIL);
+	FAILED_RETURN(GAME->AddFont(TEXT("Font_135"), TEXT("../../Resource/Default/Fonts/135ex.spritefont")), E_FAIL);
 #endif // _DEBUG
 
 	return S_OK;
 }
 
-void Client::MainApp::Tick(_float _timeDelta)
+void Client::MainApp::Update(_float fTimeDelta)
 {
-	GAME->Tick(_timeDelta);
+	GAME->Update(fTimeDelta);
 }
 
-HRESULT Client::MainApp::Render()
+void Client::MainApp::Render()
 {
-	return GAME->Render();
+	GAME->Render();
 }
 
-std::unique_ptr<Client::MainApp> Client::MainApp::Create()
+Client::MainApp* Client::MainApp::Create()
 {
-	auto instance = std::make_unique<Client::MainApp>();
+	auto instance = new Client::MainApp();
 	FAILED_CHECK_RETURN_MSG(instance->Initialize(), nullptr, TEXT("Failed"));
 	return instance;
 }

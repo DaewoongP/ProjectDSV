@@ -5,28 +5,44 @@
 #include "ImguiManager.h"
 #include "TextureManager.h"
 
+#include "Scene.h"
+
 USING(Engine)
 
 IMPLEMENT_SINGLETON(Engine::GameInstance)
 
 ComPtr<ID3D11Device> GameInstance::GetDevice() const { return GRAPHIC->GetDevice(); }
 ComPtr<ID3D11DeviceContext> GameInstance::GetDeviceContext() const { return GRAPHIC->GetDeviceContext(); }
+const D3D11_VIEWPORT& GameInstance::GetViewPort() const { return GRAPHIC->GetViewPort(); }
 
-HRESULT GameInstance::Initialize(HINSTANCE _hInst, _uint _numLevels, const GRAPHICDESC& _graphicDesc, _Inout_ ComPtr<ID3D11Device>& _device, _Inout_ ComPtr<ID3D11DeviceContext>& _deviceContext)
+GameInstance::GameInstance()
+    : m_nCurrentSceneIndex(-1), m_pCurrentScene(nullptr)
 {
-    FAILED_RETURN(GRAPHIC->Initialize(_graphicDesc.hWnd, _graphicDesc.WinMode, _graphicDesc.ViewportSizeX, _graphicDesc.ViewportSizeY, _device, _deviceContext), E_FAIL);
+
+}
+
+GameInstance::~GameInstance()
+{
+    Utility::SafeRelease(m_pCurrentScene);
+}
+
+HRESULT GameInstance::Initialize(HINSTANCE _hInst, _uint _numLevels, const GRAPHICDESC& _graphicDesc)
+{
+    FAILED_RETURN(GRAPHIC->Initialize(_graphicDesc.hWnd, _graphicDesc.WinMode, _graphicDesc.ViewportSizeX, _graphicDesc.ViewportSizeY), E_FAIL);
     FAILED_RETURN(INPUT->Initialize(_hInst, _graphicDesc.hWnd), E_FAIL);
     FAILED_RETURN(RENDER->Initialize(), E_FAIL);
-    FAILED_RETURN(GUI->Initialize(_graphicDesc.hWnd, _device, _deviceContext), E_FAIL);
+    FAILED_RETURN(GUI->Initialize(_graphicDesc.hWnd, GRAPHIC->GetDevice(), GRAPHIC->GetDeviceContext()), E_FAIL);
 
     return S_OK;
 }
 
-void GameInstance::Tick(_float _timeDelta)
+void GameInstance::Update(_float fTimeDelta)
 {
-    INPUT->Tick();
+    INPUT->Update();
     
-    TIMER->Tick(_timeDelta);
+    TIMER->Update(fTimeDelta);
+
+    m_pCurrentScene->Update();
 }
 
 HRESULT GameInstance::Render()
@@ -72,9 +88,22 @@ void GameInstance::ImguiEnd() { GUI->End(); }
 void GameInstance::AddRenderGroup(RenderManager::RenderType _renderType, Component* _component) { return RENDER->AddRenderGroup(_renderType, _component); }
 #pragma endregion
 
-HRESULT GameInstance::ClearLevelResources(_uint _preLevelIndex)
+void GameInstance::StartScene(_uint nSceneIndex, Scene* pScene)
 {
-    TEXTURE->ClearLevelTextures();
+    Utility::SafeRelease(m_pCurrentScene);
+    ClearSceneResources();
+
+    if (nullptr == pScene)
+        return;
+
+    m_nCurrentSceneIndex = nSceneIndex;
+    m_pCurrentScene = pScene;
+    m_pCurrentScene->SetSceneIndex(nSceneIndex);
+}
+
+HRESULT GameInstance::ClearSceneResources()
+{
+    TEXTURE->ClearSceneTextures();
 
     return S_OK;
 }

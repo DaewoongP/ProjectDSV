@@ -5,6 +5,11 @@ USING(Engine)
 
 IMPLEMENT_SINGLETON(TextureManager)
 
+TextureManager::~TextureManager()
+{
+	ClearStaticTextures();
+}
+
 Texture* TextureManager::ReuseTexture(const std::wstring& _textureFilePath, _uint _numTextures, TextureSaveType _saveType)
 {
 	// find in static
@@ -43,10 +48,18 @@ Texture* TextureManager::ReuseTexture(const std::wstring& _textureFilePath, _uin
 	return texture;
 }
 
-void TextureManager::ClearLevelTextures()
+void TextureManager::ClearSceneTextures()
 {
 	for (auto& texture : mSceneTextures)
 		Utility::SafeRelease(texture.second);
 
 	mSceneTextures.clear();
+}
+
+void TextureManager::ClearStaticTextures()
+{
+	for (auto& texture : mStaticTextures)
+		Utility::SafeRelease(texture.second);
+
+	mStaticTextures.clear();
 }

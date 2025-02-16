@@ -18,7 +18,7 @@ class TimerManager
 	DECLARE_SINGLETON(TimerManager)
 public:
 	TimerManager() = default;
-	~TimerManager() = default;
+	~TimerManager();
 
 public:
 	_float		GetTimeDelta(const std::wstring& _timerTag);
@@ -27,7 +27,7 @@ public:
 public:
 	HRESULT		AddTimer(const std::wstring& _timerTag);
 	void		Invoke(std::function<void(void*)> _func, void* _arg, _float _callTime, _bool _loop = false);
-	void		Tick(_float _timeDelta);
+	void		Update(_float _timeDelta);
 
 private:
 	Timer* FindTimer(const std::wstring& _timerTag);

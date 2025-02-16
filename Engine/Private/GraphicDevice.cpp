@@ -2,8 +2,7 @@
 
 IMPLEMENT_SINGLETON(Engine::GraphicDevice)
 USING(Engine)
-HRESULT Engine::GraphicDevice::Initialize(HWND _hWnd, GRAPHICDESC::WINMODE _winMode, _uint _winCX, _uint _winCY, 
-	_Inout_ ComPtr<ID3D11Device>& _device, _Inout_ ComPtr<ID3D11DeviceContext>& _deviceContext)
+HRESULT Engine::GraphicDevice::Initialize(HWND _hWnd, GRAPHICDESC::WINMODE _winMode, _uint _winCX, _uint _winCY)
 {
 	_uint		flag = 0;
 
@@ -25,20 +24,16 @@ HRESULT Engine::GraphicDevice::Initialize(HWND _hWnd, GRAPHICDESC::WINMODE _winM
 
 	mDeviceContext->OMSetRenderTargets(1, rtv->GetAddressOf(), mDepthStencilView.Get());
 
-	D3D11_VIEWPORT			ViewPortDesc;
-	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+	ZeroMemory(&mViewPort, sizeof(D3D11_VIEWPORT));
 
-	ViewPortDesc.TopLeftX = 0.f;
-	ViewPortDesc.TopLeftY = 0.f;
-	ViewPortDesc.Width = _float(_winCX);
-	ViewPortDesc.Height = _float(_winCY);
-	ViewPortDesc.MinDepth = 0.f;
-	ViewPortDesc.MaxDepth = 1.f;
+	mViewPort.TopLeftX = 0.f;
+	mViewPort.TopLeftY = 0.f;
+	mViewPort.Width = _float(_winCX);
+	mViewPort.Height = _float(_winCY);
+	mViewPort.MinDepth = 0.f;
+	mViewPort.MaxDepth = 1.f;
 
-	mDeviceContext->RSSetViewports(1, &ViewPortDesc);
-
-	_device = mDevice;
-	_deviceContext = mDeviceContext;
+	mDeviceContext->RSSetViewports(1, &mViewPort);
 
 	return S_OK;
 }

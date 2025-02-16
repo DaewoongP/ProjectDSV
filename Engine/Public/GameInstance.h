@@ -8,16 +8,21 @@ class ENGINE_DLL GameInstance
 {
 	DECLARE_SINGLETON(GameInstance)
 public:
-	GameInstance() = default;
-	~GameInstance() = default;
+	GameInstance();
+	~GameInstance();
 
 public: /* Device & Context */
 	ComPtr<ID3D11Device> GetDevice() const;
 	ComPtr<ID3D11DeviceContext> GetDeviceContext() const;
+	const D3D11_VIEWPORT& GetViewPort() const;
 
 public:
-	HRESULT Initialize(HINSTANCE _hInst, _uint _numLevels, const GRAPHICDESC& _graphicDesc, _Inout_ ComPtr<ID3D11Device>& _device, _Inout_ ComPtr<ID3D11DeviceContext>& _deviceContext);
-	void Tick(_float _timeDelta);
+	void SetMousePos(_int2 vPos) { m_vMousePos = vPos; }
+	_int2 GetMousePos() const { return m_vMousePos; }
+
+public:
+	HRESULT Initialize(HINSTANCE _hInst, _uint _numLevels, const GRAPHICDESC& _graphicDesc);
+	void Update(_float fTimeDelta);
 	HRESULT Render();
 
 public: /* GraphicDevice */
@@ -48,8 +53,18 @@ public: /* ImguiManager */
 public: /* RenderManager */
 	void AddRenderGroup(RenderManager::RenderType _renderType, Component* _component);
 
+public:
+	void StartScene(_uint nSceneIndex, class Scene* pScene);
+
 private:
-	HRESULT ClearLevelResources(_uint _preLevelIndex);
+	HRESULT ClearSceneResources();
+
+private: // Engine Data
+	_int				m_nCurrentSceneIndex;
+	class Scene*		m_pCurrentScene;
+
+private:
+	_int2 m_vMousePos;
 
 public:
 	static void Release();

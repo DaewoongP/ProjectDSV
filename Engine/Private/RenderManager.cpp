@@ -5,6 +5,14 @@ USING(Engine)
 
 IMPLEMENT_SINGLETON(RenderManager)
 
+RenderManager::~RenderManager()
+{
+	for (_uint i = 0; i < static_cast<_uint>(RenderType::TYPEEND); ++i)
+	{
+		ClearRenderGroup(static_cast<RenderType>(i));
+	}
+}
+
 HRESULT RenderManager::Initialize()
 {
 	return S_OK;
@@ -30,6 +38,7 @@ HRESULT RenderManager::RenderPriority()
 	{
 		if (nullptr != component)
 			component->Render();
+		Utility::SafeRelease(component);
 	}
 
 	m_arrRenderComponents[static_cast<_uint>(RenderType::PRIORITY)].clear();

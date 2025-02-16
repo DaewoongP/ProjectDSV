@@ -69,7 +69,7 @@ HRESULT InputDevice::Initialize(HINSTANCE _hInst, HWND _hWnd)
 	return S_OK;
 }
 
-void InputDevice::Tick()
+void InputDevice::Update()
 {
 	memcpy(mPreKeyState, mKeyState, sizeof(_byte) * MAX_DIK);
 	memcpy(&mPreMouseState, &mMouseState, sizeof(DIMOUSESTATE));

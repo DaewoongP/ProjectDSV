@@ -4,6 +4,12 @@ USING(Engine)
 
 IMPLEMENT_SINGLETON(TimerManager)
 
+TimerManager::~TimerManager()
+{
+	for (auto& timer : mTimers)
+		Utility::SafeRelease(timer.second);
+}
+
 _float TimerManager::GetTimeDelta(const std::wstring& _timerTag)
 {
 	Timer* timer = FindTimer(_timerTag);
@@ -50,7 +56,7 @@ void TimerManager::Invoke(std::function<void(void*)> _func, void* _arg, _float _
 	mFunctionTimers.emplace_back(funcTimer);
 }
 
-void TimerManager::Tick(_float _timeDelta)
+void TimerManager::Update(_float _timeDelta)
 {
 	for (auto iter = mFunctionTimers.begin(); iter != mFunctionTimers.end();)
 	{

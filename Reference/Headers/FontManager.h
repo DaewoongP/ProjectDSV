@@ -8,7 +8,7 @@ class FontManager
 	DECLARE_SINGLETON(FontManager)
 public:
 	FontManager() = default;
-	~FontManager() = default;
+	~FontManager();
 
 public:
 	HRESULT AddFont(const std::wstring& _fontTag, const std::wstring& _fontFilePath);

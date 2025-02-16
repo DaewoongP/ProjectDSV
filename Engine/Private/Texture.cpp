@@ -51,12 +51,12 @@ HRESULT Texture::Initialize(const std::wstring& _textureFilePath, _uint _numText
 	return S_OK;
 }
 
-HRESULT Texture::BindShaderResource(std::shared_ptr<class Shader> _shader, const std::string& _constantName, _uint _textureIndex)
+HRESULT Texture::BindShaderResource(class Shader* _shader, const std::string& _constantName, _uint _textureIndex)
 {
 	return _shader->BindShaderResource(_constantName, mTextures[_textureIndex]);
 }
 
-HRESULT Texture::BindShaderResources(std::shared_ptr<class Shader> _shader, const std::string& _constantName)
+HRESULT Texture::BindShaderResources(class Shader* _shader, const std::string& _constantName)
 {
 	return _shader->BindShaderResources(_constantName, mTextures.data(), mNumTexture);
 }

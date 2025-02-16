@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "Client.h"
+#include "windowsx.h"
 
 #include "MainApp.h"
 
@@ -46,7 +47,6 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -91,11 +91,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
 
     // Create MainApp
-    std::unique_ptr<MainApp> mainApp = MainApp::Create();
+    MainApp* mainApp = MainApp::Create();
     _float timeAcc = 0.f;
 
     FAILED_RETURN(GAME->AddTimer(TEXT("Timer_Default")), FALSE);
-    FAILED_RETURN(GAME->AddTimer(TEXT("Timer_60")), FALSE);
+    FAILED_RETURN(GAME->AddTimer(TEXT("MainTimer")), FALSE);
 
     // Main Loop
     while (true)
@@ -118,14 +118,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         /* MainApp 객체의 처리. */
         if (timeAcc >= 1.f / CLIENT_FRAME)
         {
-            GAME->TickTimeDelta(TEXT("Timer_60"));
+            GAME->TickTimeDelta(TEXT("MainTimer"));
 
-            mainApp->Tick(GAME->GetTimeDelta(TEXT("Timer_60")));
+            mainApp->Update(GAME->GetTimeDelta(TEXT("MainTimer")));
             mainApp->Render();
 
             timeAcc = 0.f;
         }
     }
+
+    Utility::SafeDelete(mainApp);
 
     GAME->Release();
 
@@ -194,9 +196,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // 메뉴 선택을 구문 분석합니다:
             switch (wmId)
             {
-            case IDM_ABOUT:
-                DialogBox(ghInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -213,6 +212,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EndPaint(hWnd, &ps);
         }
         break;
+    case WM_MOUSEMOVE:
+        {
+            int x = GET_X_LPARAM(lParam);
+            int y = GET_Y_LPARAM(lParam);
+            GAME->SetMousePos({ x, y });
+        }
+        break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -220,24 +226,4 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
-}
-
-// 정보 대화 상자의 메시지 처리기입니다.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
-
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
 }

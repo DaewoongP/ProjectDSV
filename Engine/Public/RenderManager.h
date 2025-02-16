@@ -12,7 +12,7 @@ public:
 
 public:
 	RenderManager() = default;
-	~RenderManager() = default;
+	~RenderManager();
 
 public:
 	HRESULT Initialize();

@@ -1,19 +1,19 @@
 #pragma once
-#include "Engine_Defines.h"
+#include "Base.h"
 #include "Client_Defines.h"
 
 BEGIN(Client)
 
-class Loader
+class Loader : public Engine::Base
 {
 public:
 	Loader() = default;
-	~Loader();
+	~Loader() = default;
 public:
 	_bool IsFinished() const { return mFinished; }
 
 public:
-	HRESULT Initialize(LevelType _levelType);
+	HRESULT Initialize(SceneType _levelType);
 	HRESULT Loading();
 
 private:
@@ -25,12 +25,13 @@ private:
 	CRITICAL_SECTION	mCriticalSection;
 
 private:
-	LevelType			mNextLevelType;
+	SceneType			m_eNextSceneType;
 	_tchar				mLoading[MAX_PATH];
 	_bool				mFinished;
 
 public:
-	static std::unique_ptr<Loader> Create(LevelType _levelType);
+	static Loader* Create(SceneType _levelType);
+	virtual void Free() override;
 };
 
 END

@@ -5,6 +5,12 @@ USING(Engine)
 
 IMPLEMENT_SINGLETON(FontManager)
 
+FontManager::~FontManager()
+{
+	for (auto& font : m_umapFonts)
+		Utility::SafeRelease(font.second);
+}
+
 HRESULT FontManager::AddFont(const std::wstring& _fontTag, const std::wstring& _fontFilePath)
 {
 	if (nullptr != FindFont(_fontTag))

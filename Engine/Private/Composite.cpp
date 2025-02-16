@@ -27,7 +27,6 @@ void Composite::Update()
 void Composite::AddComponent(const std::wstring& wstrKey, Component* pComponent)
 {
 	m_umapComponents.emplace(wstrKey, pComponent);
-	Utility::SafeAddRef(pComponent);
 }
 
 void Composite::RemoveComponent(const std::wstring& wstrKey)
@@ -35,4 +34,13 @@ void Composite::RemoveComponent(const std::wstring& wstrKey)
 	auto component = GetComponent(wstrKey);
 	Utility::SafeRelease(component);
 	m_umapComponents.erase(wstrKey);
+}
+
+void Composite::Free()
+{
+	for (auto& component : m_umapComponents)
+		Utility::SafeRelease(component.second);
+	m_umapComponents.clear();
+
+	__super::Free();
 }

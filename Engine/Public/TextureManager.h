@@ -12,11 +12,12 @@ public:
 
 public:
 	TextureManager() = default;
-	~TextureManager() = default;
+	~TextureManager();
 
 public:
 	Texture* ReuseTexture(const std::wstring& _textureFilePath, _uint _numTextures = 1, TextureSaveType _saveType = TextureSaveType::CLEAR);
-	void ClearLevelTextures();
+	void ClearSceneTextures();
+	void ClearStaticTextures();
 
 private:
 	_umap<std::wstring, Texture*>	mStaticTextures;

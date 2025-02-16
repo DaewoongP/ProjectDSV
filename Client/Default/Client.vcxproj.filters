@@ -28,9 +28,6 @@
     <Filter Include="02. GameObject">
       <UniqueIdentifier>{ea024430-189c-4e2b-8993-b859c3dc434f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Test">
-      <UniqueIdentifier>{90c570fa-df64-4bb9-afa4-a91bf4f2cee5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97. ShaderFiles">
       <UniqueIdentifier>{49fb87ee-1046-4b0c-b1ed-bfc85ccd8261}</UniqueIdentifier>
     </Filter>
@@ -54,20 +51,17 @@
     <ClInclude Include="..\public\MainApp.h">
       <Filter>00. MainApp</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\LevelLoading.h">
+    <ClInclude Include="..\public\SceneLoading.h">
       <Filter>01. Levels\98. Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Loader.h">
       <Filter>01. Levels\99. Loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\LevelPlay1.h">
+    <ClInclude Include="..\public\ScenePlay1.h">
       <Filter>01. Levels\01. Level1</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\LevelLogo.h">
+    <ClInclude Include="..\public\SceneLogo.h">
       <Filter>01. Levels\00. Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\TestObject.h">
-      <Filter>02. GameObject\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,20 +84,17 @@
     <ClCompile Include="..\private\MainApp.cpp">
       <Filter>00. MainApp</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\LevelLoading.cpp">
+    <ClCompile Include="..\private\SceneLoading.cpp">
       <Filter>01. Levels\98. Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Loader.cpp">
       <Filter>01. Levels\99. Loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\LevelPlay1.cpp">
+    <ClCompile Include="..\private\ScenePlay1.cpp">
       <Filter>01. Levels\01. Level1</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\LevelLogo.cpp">
+    <ClCompile Include="..\private\SceneLogo.cpp">
       <Filter>01. Levels\00. Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\TestObject.cpp">
-      <Filter>02. GameObject\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

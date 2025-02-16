@@ -14,8 +14,8 @@ public:
 	virtual HRESULT Initialize(const std::wstring& _textureFilePath, _uint _numTexture);
 
 public:
-	HRESULT BindShaderResource(std::shared_ptr<class Shader> _shader, const std::string& _constantName, _uint _textureIndex = 0);
-	HRESULT BindShaderResources(std::shared_ptr<class Shader> _shader, const std::string& _constantName);
+	HRESULT BindShaderResource(class Shader* _shader, const std::string& _constantName, _uint _textureIndex = 0);
+	HRESULT BindShaderResources(class Shader* _shader, const std::string& _constantName);
 
 private:
 	_uint											mNumTexture;

@@ -1,35 +1,37 @@
 #pragma once
-#include "Shader.h"
-#include "Texture.h"
-#include "RectBuffer.h"
+#include "Composite.h"
 
 BEGIN(Engine)
 
-class ENGINE_DLL UI : public Component
+class Shader;
+class Texture;
+class RectBuffer;
+class ENGINE_DLL UI : public Composite
 {
 public: // constructor
 	UI();
 	virtual ~UI() = default;
 
-public: // public func
-	void Initialize();
-
-public: // virtual func
-	virtual void Update() override;
+public:
+	void Initialize(const std::wstring& wstrTexturePath, _float2 vPos, _float fWidth, _float fHeight);
 	virtual void Render() override;
 
-private: // component
-	Engine::RectBuffer*		m_pRectBuffer;
-	Engine::Shader*			m_pShader;
-	Engine::Texture*		m_pTexture;
+public:
+	void ChangeTexture(Texture* pTexture);
+	bool IsOnMe();
 
-private: // data
-	_float2		m_vPos; // LT
+protected: // component
+	RectBuffer*		m_pRectBuffer;
+	Shader*			m_pShader;
+	Texture*		m_pTexture;
+
+protected: // data
+	_float2		m_vPos;
 	_float		m_fWidth;
 	_float		m_fHeight;
 	
 public: // handling func
-	static UI* Create();
+	static UI* Create(const std::wstring& wstrTexturePath, _float2 vPos, _float fWidth, _float fHeight);
 	virtual void Free() override;
 };
 

@@ -22,7 +22,7 @@ public:
 
 public:
 	HRESULT		Initialize(HINSTANCE _hInst, HWND _hWnd);
-	void		Tick();
+	void		Update();
 
 private:
 	_bool    KeyDown(const _ubyte& _key);

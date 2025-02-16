@@ -79,6 +79,9 @@
     <Filter Include="01. Utility\01. Component\00. Scene">
       <UniqueIdentifier>{ce744fc5-4fb6-489d-bff2-228b6868e021}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\01. Component\05. UI\00. Button">
+      <UniqueIdentifier>{0e76d142-4c3e-4bfd-9164-7f2e684e219c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\GameInstance.h">
@@ -180,6 +183,9 @@
     <ClInclude Include="..\public\Base.h">
       <Filter>01. Utility\99. Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Button.h">
+      <Filter>01. Utility\01. Component\05. UI\00. Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\GameInstance.cpp">
@@ -262,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Base.cpp">
       <Filter>01. Utility\99. Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button.cpp">
+      <Filter>01. Utility\01. Component\05. UI\00. Button</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

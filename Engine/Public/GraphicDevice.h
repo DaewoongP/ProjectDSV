@@ -13,11 +13,10 @@ public:
 public:
 	ComPtr<ID3D11Device> GetDevice() const { return mDevice; }
 	ComPtr<ID3D11DeviceContext> GetDeviceContext() const { return mDeviceContext; }
+	const D3D11_VIEWPORT& GetViewPort() const { return mViewPort; }
 
 public:
-	HRESULT Initialize(HWND _hWnd, GRAPHICDESC::WINMODE _winMode,
-		_uint _winCX, _uint _winCY, _Inout_ ComPtr<ID3D11Device>& _device,
-		_Inout_ ComPtr<ID3D11DeviceContext>& _deviceContext);
+	HRESULT Initialize(HWND _hWnd, GRAPHICDESC::WINMODE _winMode, _uint _winCX, _uint _winCY);
 	HRESULT RenderBegin(_float4 _clearColor);
 	HRESULT RenderEnd();
 
@@ -27,6 +26,8 @@ private:
 	ComPtr<IDXGISwapChain>				mSwapChain;
 	ComPtr<ID3D11RenderTargetView>		mBackBufferRTV;
 	ComPtr<ID3D11DepthStencilView>		mDepthStencilView;
+
+	D3D11_VIEWPORT						mViewPort;
 
 private:
 	HRESULT ClearBackBuffer(_float4 _clearColor);

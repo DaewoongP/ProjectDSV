@@ -23,7 +23,7 @@ private:
 	_umap<std::wstring /*wstrKey*/, Component*> m_umapComponents;
 
 public:
-	virtual void Free() override { __super::Free(); }
+	virtual void Free() override;
 };
 
 END

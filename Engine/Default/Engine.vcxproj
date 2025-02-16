@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h" />
+    <ClInclude Include="..\public\Button.h" />
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\Composite.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -55,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp" />
+    <ClCompile Include="..\private\Button.cpp" />
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Composite.cpp" />
     <ClCompile Include="..\private\CustomFont.cpp" />
