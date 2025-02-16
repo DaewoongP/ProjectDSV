@@ -2,7 +2,6 @@
 #include "GameInstance.h"
 
 #include "SceneLogo.h"
-#include "ScenePlay1.h"
 
 Client::SceneLoading::SceneLoading()
 	: m_pLoader(nullptr), m_eNextSceneType(SceneType::TYPEEND)
@@ -36,9 +35,6 @@ void Client::SceneLoading::Update()
 	{
 	case SceneType::LOGO:
 		pScene = Client::SceneLogo::Create();
-		break;
-	case SceneType::PLAY1:
-		pScene = Client::ScenePlay1::Create();
 		break;
 	}
 	if (nullptr == pScene)

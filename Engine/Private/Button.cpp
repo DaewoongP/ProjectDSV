@@ -6,7 +6,7 @@ USING(Engine)
 
 Button::Button()
     : UI()
-    , m_pNormalTexture(nullptr), m_pClickTexture(nullptr), m_ClickFunc(), m_bClicked(false)
+    , m_pNormalTexture(nullptr), m_pClickTexture(nullptr), m_ClickFunc()
 {
 }
 
@@ -28,31 +28,28 @@ void Button::SetClickFunc(std::function<void()>&& func)
     m_ClickFunc = std::move(func);
 }
 
-void Button::Update()
+void Button::LButtonDown(_int x, _int y)
 {
-    if (GAME->GetDIMouseState(InputDevice::DIMK_LBUTTON, InputDevice::KEY_UP) &&
-        m_bClicked)
-    {
-        ChangeTexture(m_pNormalTexture);
-
-        if (IsOnMe())
-            Click();
-
-        m_bClicked = false;
-    }
-    else if (GAME->GetDIMouseState(InputDevice::DIMK_LBUTTON, InputDevice::KEY_DOWN) &&
-        IsOnMe())
-    {
-        m_bClicked = true;
-        ChangeTexture(m_pClickTexture);
-    }
-
-    __super::Update();
+    ChangeTexture(m_pClickTexture);
+    __super::LButtonDown(x, y);
 }
 
-void Button::Click()
+void Button::RButtonDown(_int x, _int y)
 {
-    m_ClickFunc();
+    __super::RButtonDown(x, y);
+}
+
+void Button::LButtonUp(_int x, _int y)
+{
+    ChangeTexture(m_pNormalTexture);
+    if (IsOnMe(x, y))
+        m_ClickFunc();
+    __super::LButtonUp(x, y);
+}
+
+void Button::RButtonUp(_int x, _int y)
+{
+    __super::RButtonUp(x, y);
 }
 
 Button* Button::Create(const std::wstring& wstrTexturePath, const std::wstring& wstrClickTexturePath, _float2 vPos, _float fWidth, _float fHeight)

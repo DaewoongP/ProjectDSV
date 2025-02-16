@@ -43,9 +43,6 @@ HRESULT Client::Loader::Loading()
 	case SceneType::LOGO:
 		hr = LoadingForLogo();
 		break;
-	case SceneType::PLAY1:
-		hr = LoadingForPlay1();
-		break;
 	default:
 		DISPLAY_ERROR(TEXT("Loading Func Failed"));
 		__debugbreak();
@@ -60,13 +57,6 @@ HRESULT Client::Loader::Loading()
 }
 
 HRESULT Client::Loader::LoadingForLogo()
-{
-	mFinished = true;
-
-	return S_OK;
-}
-
-HRESULT Client::Loader::LoadingForPlay1()
 {
 	mFinished = true;
 

@@ -24,7 +24,7 @@ void Client::SceneLogo::Initialize()
 	AddComponent(TEXT("StartButton"), m_pStartButton);
 	m_pStartButton->SetClickFunc([]() {
 		DebugFunc::Text("Enter!");
-		GAME->StartScene(static_cast<_uint>(SceneType::LOADING), Client::SceneLoading::Create(SceneType::PLAY1));
+		//GAME->StartScene(static_cast<_uint>(SceneType::LOADING), Client::SceneLoading::Create(SceneType::PLAY1));
 		});
 
 	m_pEndButton = Engine::Button::Create(TEXT("../../Resource/Interface/Logo/end.png"), TEXT("../../Resource/Interface/Logo/end_click.png"),

@@ -43,6 +43,7 @@
     <ClInclude Include="..\Public\imstb_textedit.h" />
     <ClInclude Include="..\Public\imstb_truetype.h" />
     <ClInclude Include="..\public\InputDevice.h" />
+    <ClInclude Include="..\public\Popup.h" />
     <ClInclude Include="..\public\Scene.h" />
     <ClInclude Include="..\public\RectBuffer.h" />
     <ClInclude Include="..\public\RenderManager.h" />
@@ -93,6 +94,7 @@
       <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</IncludeInUnityFile>
     </ClCompile>
     <ClCompile Include="..\private\InputDevice.cpp" />
+    <ClCompile Include="..\private\Popup.cpp" />
     <ClCompile Include="..\private\Scene.cpp" />
     <ClCompile Include="..\private\RectBuffer.cpp" />
     <ClCompile Include="..\private\RenderManager.cpp" />

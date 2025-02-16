@@ -9,7 +9,7 @@ USING(Engine)
 UI::UI()
 	: Composite()
 	, m_pShader(nullptr), m_pTexture(nullptr), m_pRectBuffer(nullptr)
-	, m_vPos({0.f, 0.f}), m_fWidth(0.f), m_fHeight(0.f)
+	, m_vPos({0.f, 0.f}), m_fWidth(0.f), m_fHeight(0.f), m_bLClicked(false), m_bRClicked(false)
 {
 }
 
@@ -29,6 +29,51 @@ void UI::Initialize(const std::wstring& wstrTexturePath, _float2 vPos, _float fW
 	Utility::SafeAddRef(m_pShader);
 	AddComponent(TEXT("Texture"), m_pTexture);
 	Utility::SafeAddRef(m_pTexture);
+}
+
+void UI::Update()
+{
+	_int2 vMousePos = GAME->GetMousePos();
+
+	if (IsOnMe(vMousePos.x, vMousePos.y))
+	{
+		if (GAME->GetDIMouseState(InputDevice::DIMK_LBUTTON, InputDevice::KEY_DOWN))
+		{
+			LButtonDown(vMousePos.x, vMousePos.y);
+			m_bLClicked = true;
+		}
+		else if (GAME->GetDIMouseState(InputDevice::DIMK_LBUTTON, InputDevice::KEY_UP) &&
+			m_bLClicked)
+		{
+			LButtonUp(vMousePos.x, vMousePos.y);
+			m_bLClicked = false;
+		}
+		else if (GAME->GetDIMouseState(InputDevice::DIMK_RBUTTON, InputDevice::KEY_DOWN) &&
+			IsOnMe(vMousePos.x, vMousePos.y))
+		{
+			RButtonDown(vMousePos.x, vMousePos.y);
+			m_bRClicked = true;
+		}
+		else if (GAME->GetDIMouseState(InputDevice::DIMK_RBUTTON, InputDevice::KEY_UP) &&
+			m_bRClicked)
+		{
+			RButtonUp(vMousePos.x, vMousePos.y);
+			m_bRClicked = false;
+		}
+	}
+	else
+	{
+		if (m_bLClicked)
+		{
+			LButtonUp(vMousePos.x, vMousePos.y);
+			m_bLClicked = false;
+		}
+		if (m_bRClicked)
+		{
+			RButtonUp(vMousePos.x, vMousePos.y);
+			m_bRClicked = false;
+		}
+	}
 }
 
 void UI::Render()
@@ -58,22 +103,36 @@ void UI::ChangeTexture(Texture* pTexture)
 	m_pTexture = pTexture;
 }
 
-bool UI::IsOnMe()
+bool UI::IsOnMe(_int x, _int y)
 {
-	_int2 vMousePos = GAME->GetMousePos();
-	
 	_float2 vLT{ m_vPos.x - m_fWidth * 0.5f, m_vPos.y - m_fHeight * 0.5f };
 	_float2 vRB{ m_vPos.x + m_fWidth * 0.5f, m_vPos.y + m_fHeight * 0.5f };
 
-	if (vLT.x <= vMousePos.x &&
-		vLT.y <= vMousePos.y &&
-		vRB.x >= vMousePos.x &&
-		vRB.y >= vMousePos.y)
+	if (vLT.x <= x &&
+		vLT.y <= y &&
+		vRB.x >= x &&
+		vRB.y >= y)
 	{
 		return true;
 	}
 
 	return false;
+}
+
+void UI::LButtonDown(_int x, _int y)
+{
+}
+
+void UI::RButtonDown(_int x, _int y)
+{
+}
+
+void UI::LButtonUp(_int x, _int y)
+{
+}
+
+void UI::RButtonUp(_int x, _int y)
+{
 }
 
 UI* UI::Create(const std::wstring& wstrTexturePath, _float2 vPos, _float fWidth, _float fHeight)

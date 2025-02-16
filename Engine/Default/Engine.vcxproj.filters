@@ -82,6 +82,9 @@
     <Filter Include="01. Utility\01. Component\05. UI\00. Button">
       <UniqueIdentifier>{0e76d142-4c3e-4bfd-9164-7f2e684e219c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\01. Component\05. UI\01. Popup">
+      <UniqueIdentifier>{9a08c7b5-b380-4e12-84c1-864cc488cfc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\GameInstance.h">
@@ -186,6 +189,9 @@
     <ClInclude Include="..\public\Button.h">
       <Filter>01. Utility\01. Component\05. UI\00. Button</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Popup.h">
+      <Filter>01. Utility\01. Component\05. UI\01. Popup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\GameInstance.cpp">
@@ -271,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Button.cpp">
       <Filter>01. Utility\01. Component\05. UI\00. Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Popup.cpp">
+      <Filter>01. Utility\01. Component\05. UI\01. Popup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
