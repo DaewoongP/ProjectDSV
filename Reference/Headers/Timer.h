@@ -1,9 +1,9 @@
 #pragma once
-#include "Engine_Defines.h"
+#include "Base.h"
 
 BEGIN(Engine)
 
-class Timer
+class Timer : public Base
 {
 public:
 	_float	GetTimeDelta() const { return mTimeDelta; }
@@ -21,7 +21,8 @@ private:
 	_float					mTimeDelta;
 
 public:
-	static std::shared_ptr<Timer> Create();
+	static Timer* Create();
+	virtual void Free() override {}
 };
 
 END

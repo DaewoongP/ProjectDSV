@@ -6,7 +6,7 @@ IMPLEMENT_SINGLETON(TimerManager)
 
 _float TimerManager::GetTimeDelta(const std::wstring& _timerTag)
 {
-	std::shared_ptr<Timer> timer = FindTimer(_timerTag);
+	Timer* timer = FindTimer(_timerTag);
 	if (nullptr == timer)
 		return 0.0;
 
@@ -15,7 +15,7 @@ _float TimerManager::GetTimeDelta(const std::wstring& _timerTag)
 
 void TimerManager::TickTimeDelta(const std::wstring& _timerTag)
 {
-	std::shared_ptr<Timer> timer = FindTimer(_timerTag);
+	Timer* timer = FindTimer(_timerTag);
 	if (nullptr == timer)
 		return;
 
@@ -24,7 +24,7 @@ void TimerManager::TickTimeDelta(const std::wstring& _timerTag)
 
 HRESULT TimerManager::AddTimer(const std::wstring& _timerTag)
 {
-	std::shared_ptr<Timer> timer = FindTimer(_timerTag);
+	Timer* timer = FindTimer(_timerTag);
 
 	if (nullptr != timer)
 	{
@@ -71,7 +71,7 @@ void TimerManager::Tick(_float _timeDelta)
 	}
 }
 
-std::shared_ptr<Timer> TimerManager::FindTimer(const std::wstring& _timerTag)
+Timer* TimerManager::FindTimer(const std::wstring& _timerTag)
 {
 	auto		iter = mTimers.find(_timerTag);
 

@@ -5,7 +5,7 @@ USING(Engine)
 
 IMPLEMENT_SINGLETON(FontManager)
 
-HRESULT FontManager::AddFont(ComPtr<ID3D11Device> _device, ComPtr<ID3D11DeviceContext> _deviceContext, const std::wstring& _fontTag, const std::wstring& _fontFilePath)
+HRESULT FontManager::AddFont(const std::wstring& _fontTag, const std::wstring& _fontFilePath)
 {
 	if (nullptr != FindFont(_fontTag))
 	{
@@ -14,7 +14,7 @@ HRESULT FontManager::AddFont(ComPtr<ID3D11Device> _device, ComPtr<ID3D11DeviceCo
 		return E_FAIL;
 	}
 	
-	mFonts.emplace(_fontTag, CustomFont::Create(_device, _deviceContext, _fontFilePath));
+	m_umapFonts.emplace(_fontTag, CustomFont::Create(_fontFilePath));
 
 	return S_OK;
 }
@@ -28,11 +28,11 @@ HRESULT FontManager::Render(const std::wstring& _fontTag, const std::wstring& _t
 	return font->Render(_text, _position, _color, _rotation, _origin, _scale);
 }
 
-std::shared_ptr<class CustomFont> FontManager::FindFont(const std::wstring& _fontTag)
+CustomFont* FontManager::FindFont(const std::wstring& _fontTag)
 {
-	auto	iter = mFonts.find(_fontTag);
+	auto	iter = m_umapFonts.find(_fontTag);
 
-	if (iter == mFonts.end())
+	if (iter == m_umapFonts.end())
 		return nullptr;
 
 	return iter->second;

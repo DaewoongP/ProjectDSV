@@ -49,6 +49,33 @@ public:
 		}
 	}
 
+	template <typename T>
+	static unsigned int SafeAddRef(T& pointer)
+	{
+		unsigned int	refCnt{ 0 };
+
+		if (nullptr != pointer)
+			refCnt = pointer->AddRef();
+
+		return refCnt;
+	}
+
+
+	template <typename T>
+	static unsigned int SafeRelease(T& pointer)
+	{
+		unsigned int	refCnt{ 0 };
+
+		if (nullptr != pointer)
+		{
+			refCnt = pointer->Release();
+
+			if (refCnt == 0)
+				pointer = nullptr;
+		}
+		return refCnt;
+	}
+
 	class TagFinder
 	{
 	public:

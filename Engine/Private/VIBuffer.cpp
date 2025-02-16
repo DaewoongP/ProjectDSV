@@ -1,4 +1,5 @@
 #include "VIBuffer.h"
+#include "GameInstance.h"
 
 USING(Engine)
 
@@ -16,23 +17,9 @@ VIBuffer::VIBuffer()
 {
 }
 
-VIBuffer::VIBuffer(const VIBuffer& rhs)
-    : Component(rhs)
-    , mVertexBuffer(rhs.mVertexBuffer)
-    , mIndexBuffer(rhs.mIndexBuffer)
-    , mNumVertices(rhs.mNumVertices)
-    , mNumIndices(rhs.mNumIndices)
-    , mVertexStride(rhs.mVertexStride)
-    , mIndexStride(rhs.mIndexStride)
-    , mNumVertexBuffers(rhs.mNumVertexBuffers)
-    , mFormat(rhs.mFormat)
-    , mTopology(rhs.mTopology)
+void VIBuffer::Render()
 {
-}
-
-HRESULT VIBuffer::Render()
-{
-    ComPtr<ID3D11DeviceContext> deviceContext = GetDeviceContext();
+    ComPtr<ID3D11DeviceContext> deviceContext = GAME->GetDeviceContext();
 
     ID3D11Buffer* buffers[] = { mVertexBuffer.Get() };
 
@@ -44,11 +31,9 @@ HRESULT VIBuffer::Render()
     deviceContext->IASetIndexBuffer(mIndexBuffer.Get(), mFormat, 0);
     deviceContext->IASetPrimitiveTopology(mTopology);
     deviceContext->DrawIndexed(mNumIndices, 0, 0);
-
-    return S_OK;
 }
 
 HRESULT VIBuffer::CreateBuffer(_Inout_ ComPtr<ID3D11Buffer>& _buffer, D3D11_BUFFER_DESC _bufferDesc, D3D11_SUBRESOURCE_DATA _subResourceData)
 {
-    return GetDevice()->CreateBuffer(&_bufferDesc, &_subResourceData, _buffer.GetAddressOf());
+    return GAME->GetDevice()->CreateBuffer(&_bufferDesc, &_subResourceData, _buffer.GetAddressOf());
 }

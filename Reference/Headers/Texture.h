@@ -8,11 +8,10 @@ class ENGINE_DLL Texture : public Component
 {
 public:
 	Texture();
-	Texture(const Texture& rhs);
 	virtual ~Texture() = default;
 
 public:
-	virtual HRESULT InitializePrototype(const std::wstring& _textureFilePath, _uint _numTexture);
+	virtual HRESULT Initialize(const std::wstring& _textureFilePath, _uint _numTexture);
 
 public:
 	HRESULT BindShaderResource(std::shared_ptr<class Shader> _shader, const std::string& _constantName, _uint _textureIndex = 0);
@@ -24,9 +23,9 @@ private:
 	std::vector<std::wstring>						mTexturePathes;
 
 public:
-	static std::shared_ptr<Texture> Create(const std::wstring& _textureFilePath, _uint _numTexture = 1, TextureManager::TextureSaveType _saveType = TextureManager::TextureSaveType::CLEAR);
-	static std::shared_ptr<Texture> CreateOrigin(const std::wstring& _textureFilePath, _uint _numTexture = 1);
-	virtual std::shared_ptr<Component> Clone(void* _arg) override;
+	static Texture* Create(const std::wstring& _textureFilePath, _uint _numTexture = 1, TextureManager::TextureSaveType _saveType = TextureManager::TextureSaveType::CLEAR);
+	static Texture* CreateOrigin(const std::wstring& _textureFilePath, _uint _numTexture = 1);
+	virtual void Free() override { __super::Free(); }
 };
 
 END

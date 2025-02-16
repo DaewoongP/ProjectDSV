@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine_Defines.h"
+#include "CustomFont.h"
 
 BEGIN(Engine)
 
@@ -11,14 +11,14 @@ public:
 	~FontManager() = default;
 
 public:
-	HRESULT AddFont(ComPtr<ID3D11Device> _device, ComPtr<ID3D11DeviceContext> _deviceContext, const std::wstring& _fontTag, const std::wstring& _fontFilePath);
+	HRESULT AddFont(const std::wstring& _fontTag, const std::wstring& _fontFilePath);
 	HRESULT Render(const std::wstring& _fontTag, const std::wstring& _text, const _float2& _position, _fvector _color, _float _rotation, const _float2& _origin, _float _scale);
 
 private:
-	_umap<std::wstring, std::shared_ptr<class CustomFont>>			mFonts;
+	_umap<std::wstring/*font tag*/, CustomFont*>			m_umapFonts;
 
 private:
-	std::shared_ptr<class CustomFont> FindFont(const std::wstring& _fontTag);
+	CustomFont* FindFont(const std::wstring& _fontTag);
 };
 
 END

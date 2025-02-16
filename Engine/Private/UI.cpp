@@ -4,45 +4,29 @@ USING(Engine)
 
 UI::UI()
 	: Component()
-	, mShader(nullptr), mTexture(nullptr), mRectBuffer(nullptr)
+	, m_pShader(nullptr), m_pTexture(nullptr), m_pRectBuffer(nullptr)
+	, m_vPos({0.f, 0.f}), m_fWidth(0.f), m_fHeight(0.f)
 {
 }
 
-UI::UI(const UI& rhs)
-	: Component(rhs)
-	, mShader(rhs.mShader), mTexture(rhs.mTexture), mRectBuffer(rhs.mRectBuffer)
+void UI::Initialize()
+{
+
+}
+
+void UI::Update()
 {
 }
 
-HRESULT UI::Initialize()
-{
-	return E_NOTIMPL;
-}
-
-void UI::Tick(_float _timeDelta)
+void UI::Render()
 {
 }
 
-void UI::LateTick(_float _timeDelta)
+UI* UI::Create()
 {
+	return nullptr;
 }
 
-HRESULT UI::Render()
+void UI::Free()
 {
-	return S_OK;
-}
-
-HRESULT UI::InitializePrototype()
-{
-	return E_NOTIMPL;
-}
-
-std::shared_ptr<UI> UI::Create()
-{
-	return std::shared_ptr<UI>();
-}
-
-std::shared_ptr<Component> UI::Clone(void* _arg)
-{
-	return std::shared_ptr<Component>();
 }

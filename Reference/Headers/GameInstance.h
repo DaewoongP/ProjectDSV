@@ -1,7 +1,6 @@
 #pragma once
 #include "InputDevice.h"
 #include "RenderManager.h"
-#include "ComponentManager.h"
 
 BEGIN(Engine)
 
@@ -39,22 +38,15 @@ public: /* InputDevice */
 	_long		GetDIMouseMove(InputDevice::MOUSEMOVESTATE _mouseMoveID);
 
 public: /* FontManager */
-	HRESULT AddFont(ComPtr<ID3D11Device> _device, ComPtr<ID3D11DeviceContext> _deviceContext, const std::wstring& _fontTag, const std::wstring& _fontFilePath);
+	HRESULT AddFont(const std::wstring& _fontTag, const std::wstring& _fontFilePath);
 	HRESULT RenderFont(const std::wstring& _fontTag, const std::wstring& _text, const _float2& _position, _fvector _color = XMVectorSet(1.f, 1.f, 1.f, 1.f), _float _rotation = 0.f, const _float2& _origin = _float2(0.f, 0.f), _float _scale = 1.f);
 
 public: /* ImguiManager */
 	void ImguiBegin();
 	void ImguiEnd();
 
-public: /* LevelManager */
-	HRESULT OpenLevel(_uint _levelIndex, std::unique_ptr<class Level>&& _newLevel);
-
-public: /* ComponentManager */
-	HRESULT AddPrototype(_uint _levelIndex, const std::wstring& _prototypeTag, std::shared_ptr<class Component> _prototype);
-	std::shared_ptr<class Component> CloneComponent(_uint _levelIndex, const std::wstring& _prototypeTag, void* _arg);
-
 public: /* RenderManager */
-	void AddRenderGroup(RenderManager::RenderType _renderType, std::shared_ptr<Component> _component);
+	void AddRenderGroup(RenderManager::RenderType _renderType, Component* _component);
 
 private:
 	HRESULT ClearLevelResources(_uint _preLevelIndex);

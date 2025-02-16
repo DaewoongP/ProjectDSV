@@ -7,33 +7,30 @@ BEGIN(Engine)
 
 class ENGINE_DLL UI : public Component
 {
-public:
+public: // constructor
 	UI();
-	UI(const UI& rhs);
 	virtual ~UI() = default;
 
-public:
-	HRESULT Initialize();
-	void Tick(_float _timeDelta);
-	void LateTick(_float _timeDelta);
-	HRESULT Render();
+public: // public func
+	void Initialize();
 
-public:
-	HRESULT InitializePrototype();
+public: // virtual func
+	virtual void Update() override;
+	virtual void Render() override;
 
-private:
-	std::shared_ptr<Engine::RectBuffer> mRectBuffer;
-	std::shared_ptr<Engine::Shader>		mShader;
-	std::shared_ptr<Engine::Texture>	mTexture;
+private: // component
+	Engine::RectBuffer*		m_pRectBuffer;
+	Engine::Shader*			m_pShader;
+	Engine::Texture*		m_pTexture;
 
-private:
-	_float2		mPos; // LT
-	_float		mWidth;
-	_float		mHeight;
+private: // data
+	_float2		m_vPos; // LT
+	_float		m_fWidth;
+	_float		m_fHeight;
 	
-public:
-	static std::shared_ptr<UI> Create();
-	virtual std::shared_ptr<Component> Clone(void* _arg);
+public: // handling func
+	static UI* Create();
+	virtual void Free() override;
 };
 
 END

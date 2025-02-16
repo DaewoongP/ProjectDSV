@@ -7,12 +7,7 @@ RectBuffer::RectBuffer()
 {
 }
 
-RectBuffer::RectBuffer(const RectBuffer& rhs)
-	: VIBuffer(rhs)
-{
-}
-
-HRESULT RectBuffer::InitializePrototype()
+void RectBuffer::Initialize()
 {
 	mNumVertexBuffers = { 1 };
 	mVertexStride = { sizeof(VTXPOSTEX) };
@@ -52,7 +47,7 @@ HRESULT RectBuffer::InitializePrototype()
 	ZeroMemory(&subResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	subResourceData.pSysMem = pVertices;
 
-	FAILED_RETURN(__super::CreateBuffer(mVertexBuffer, bufferDesc, subResourceData), E_FAIL);
+	__super::CreateBuffer(mVertexBuffer, bufferDesc, subResourceData);
 
 	Utility::SafeDeleteArray(pVertices);
 
@@ -82,23 +77,19 @@ HRESULT RectBuffer::InitializePrototype()
 	ZeroMemory(&subResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	subResourceData.pSysMem = pIndices;
 
-	FAILED_RETURN(__super::CreateBuffer(mIndexBuffer, bufferDesc, subResourceData), E_FAIL);
+	__super::CreateBuffer(mIndexBuffer, bufferDesc, subResourceData);
 	Utility::SafeDeleteArray(pIndices);
 #pragma endregion
-
-	return S_OK;
 }
 
-std::shared_ptr<RectBuffer> RectBuffer::Create()
+RectBuffer* RectBuffer::Create()
 {
-	auto instance = std::make_shared<RectBuffer>();
-	FAILED_CHECK_RETURN_MSG(instance->InitializePrototype(), nullptr, TEXT("Failed"));
+	auto instance = new RectBuffer();
+	instance->Initialize();
 	return instance;
 }
 
-std::shared_ptr<Component> RectBuffer::Clone(void* _arg)
+void RectBuffer::Free()
 {
-	auto instance = std::make_shared<RectBuffer>(*this);
-	FAILED_CHECK_RETURN_MSG(instance->Initialize(_arg), nullptr, TEXT("Failed"));
-	return instance;
+	__super::Free();
 }

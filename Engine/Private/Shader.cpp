@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "GameInstance.h"
 
 USING(Engine)
 
@@ -9,15 +10,7 @@ Shader::Shader()
 {
 }
 
-Shader::Shader(const Shader& rhs)
-	: Component(rhs)
-	, mEffect(rhs.mEffect)
-	, mNumPasses(rhs.mNumPasses)
-	, mInputLayouts(rhs.mInputLayouts)
-{
-}
-
-HRESULT Shader::InitializePrototype(const std::wstring& _shaderFilePath, const D3D11_INPUT_ELEMENT_DESC* _elements, _uint _numElements)
+HRESULT Shader::Initialize(const std::wstring& _shaderFilePath, const D3D11_INPUT_ELEMENT_DESC* _elements, _uint _numElements)
 {
 	_uint		hlslFlag = 0;
 #ifdef _DEBUG
@@ -25,7 +18,7 @@ HRESULT Shader::InitializePrototype(const std::wstring& _shaderFilePath, const D
 #else
 	hlslFlag = D3DCOMPILE_OPTIMIZATION_LEVEL1;
 #endif
-	FAILED_CHECK_RETURN_MSG(D3DX11CompileEffectFromFile(_shaderFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, hlslFlag, 0, GetDevice().Get(), mEffect.GetAddressOf(), nullptr), E_FAIL,
+	FAILED_CHECK_RETURN_MSG(D3DX11CompileEffectFromFile(_shaderFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, hlslFlag, 0, GAME->GetDevice().Get(), mEffect.GetAddressOf(), nullptr), E_FAIL,
 		TEXT("Failed Create Shader Effect File"));
 
 	ComPtr<ID3DX11EffectTechnique> technique = mEffect->GetTechniqueByIndex(0);
@@ -50,7 +43,7 @@ HRESULT Shader::InitializePrototype(const std::wstring& _shaderFilePath, const D
 
 		FAILED_CHECK_RETURN_MSG(_pass->GetDesc(&passDesc), E_FAIL, TEXT("Failed Get PASSDESC"));
 
-		FAILED_CHECK_RETURN_MSG(GetDevice()->CreateInputLayout(_elements, _numElements, passDesc.pIAInputSignature, passDesc.IAInputSignatureSize, inputLayout.GetAddressOf()), E_FAIL, 
+		FAILED_CHECK_RETURN_MSG(GAME->GetDevice()->CreateInputLayout(_elements, _numElements, passDesc.pIAInputSignature, passDesc.IAInputSignatureSize, inputLayout.GetAddressOf()), E_FAIL,
 			TEXT("Failed CreateInputLayout"));
 
 		mInputLayouts.emplace(passDesc.Name, inputLayout);
@@ -67,12 +60,12 @@ HRESULT Shader::Begin(const std::string& _passName)
 	ComPtr<ID3DX11EffectPass> _pass = technique->GetPassByName(_passName.c_str());
 	NULL_RETURN(_pass, E_FAIL);
 
-	FAILED_RETURN(_pass->Apply(0, GetDeviceContext().Get()), E_FAIL);
+	FAILED_RETURN(_pass->Apply(0, GAME->GetDeviceContext().Get()), E_FAIL);
 
 	ComPtr<ID3D11InputLayout> inputLayout = FindInputLayout(_passName);
 	NULL_RETURN(inputLayout, E_FAIL);
 
-	GetDeviceContext()->IASetInputLayout(inputLayout.Get());
+	GAME->GetDeviceContext()->IASetInputLayout(inputLayout.Get());
 
 	return S_OK;
 }
@@ -123,16 +116,9 @@ ComPtr<ID3DX11EffectVariable> Shader::GetVariable(const std::string& _constantNa
 	return mEffect->GetVariableByName(_constantName.c_str());
 }
 
-std::shared_ptr<Shader> Shader::Create(const _tchar* _shaderFilePath, const D3D11_INPUT_ELEMENT_DESC* _elements, _uint _numElements)
+Shader* Shader::Create(const _tchar* _shaderFilePath, const D3D11_INPUT_ELEMENT_DESC* _elements, _uint _numElements)
 {
-	auto instance = std::make_shared<Shader>();
-	FAILED_CHECK_RETURN_MSG(instance->InitializePrototype(_shaderFilePath, _elements, _numElements), nullptr, TEXT("Failed"));
-	return instance;
-}
-
-std::shared_ptr<Component> Shader::Clone(void* _arg)
-{
-	auto instance = std::make_shared<Shader>(*this);
-	FAILED_CHECK_RETURN_MSG(instance->Initialize(_arg), nullptr, TEXT("Failed"));
+	auto instance = new Shader;
+	FAILED_CHECK_RETURN_MSG(instance->Initialize(_shaderFilePath, _elements, _numElements), nullptr, TEXT("Failed"));
 	return instance;
 }

@@ -1,8 +1,9 @@
 #pragma once
-#include "Component.h"
+#include "Engine_Defines.h"
 
 BEGIN(Engine)
 
+class Component;
 class RenderManager
 {
 	DECLARE_SINGLETON(RenderManager)
@@ -17,24 +18,18 @@ public:
 	HRESULT Initialize();
 
 public:
-	void	AddRenderGroup(RenderType _renderType, std::shared_ptr<Component> _component);
+	void	AddRenderGroup(RenderType _renderType, Component* _component);
 	HRESULT Draw();
 
 private:
 	HRESULT RenderPriority();
-	HRESULT RenderNonBlend();
-	HRESULT RenderLights();
-	HRESULT RenderDeferred();
-	HRESULT RenderNonLight();
-	HRESULT RenderBlend();
-	HRESULT RenderPostProcessing();
-	HRESULT RenderUI();
 
 private:
 	HRESULT AddComponents();
+	void	ClearRenderGroup(RenderType eRenderType);
 
 private:
-	std::list<std::shared_ptr<Component>>	mRenderComponents[static_cast<_uint>(RenderType::TYPEEND)];
+	std::array<std::list<Component*>, static_cast<_uint>(RenderType::TYPEEND)>	m_arrRenderComponents;
 };
 
 END

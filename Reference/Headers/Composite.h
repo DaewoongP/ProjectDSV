@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Component.h"
 
 BEGIN(Engine)
@@ -8,25 +7,23 @@ class ENGINE_DLL Composite : public Component
 {
 public:
 	Composite();
-	Composite(const Composite& rhs);
 	virtual ~Composite() = default;
 
 public:
-	std::shared_ptr<Component> GetComponent(const std::wstring& _key);
+	Component* GetComponent(const std::wstring& wstrKey);
 
 public:
-	virtual void Tick(_float _timeDelta) override;
-	virtual void LateTick(_float _timeDelta) override;
+	virtual void Update() override;
 
 public:
-	std::shared_ptr<Component> AddComponent(const std::wstring& _prototypeKey, const std::wstring& _componentKey, void* _arg = nullptr, _int _levelIndex = -1);
-	size_t RemoveComponent(const std::wstring& _key);
+	void		AddComponent(const std::wstring& wstrKey, Component* pComponent);
+	void		RemoveComponent(const std::wstring& wstrKey);
 
 private:
-	std::shared_ptr<Component> FindComponent(const std::wstring& _key);
+	_umap<std::wstring /*wstrKey*/, Component*> m_umapComponents;
 
-private:
-	_umap<std::wstring, std::shared_ptr<Component>> mComponents;
+public:
+	virtual void Free() override { __super::Free(); }
 };
 
 END

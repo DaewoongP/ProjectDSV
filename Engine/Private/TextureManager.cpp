@@ -5,7 +5,7 @@ USING(Engine)
 
 IMPLEMENT_SINGLETON(TextureManager)
 
-std::shared_ptr<class Texture> TextureManager::ReuseTexture(const std::wstring& _textureFilePath, _uint _numTextures, TextureSaveType _saveType)
+Texture* TextureManager::ReuseTexture(const std::wstring& _textureFilePath, _uint _numTextures, TextureSaveType _saveType)
 {
 	// find in static
 	auto iter = mStaticTextures.find(_textureFilePath);
@@ -13,8 +13,8 @@ std::shared_ptr<class Texture> TextureManager::ReuseTexture(const std::wstring& 
 		return iter->second;
 
 	// find in level
-	iter = mLevelTextures.find(_textureFilePath);
-	if (mLevelTextures.end() != iter)
+	iter = mSceneTextures.find(_textureFilePath);
+	if (mSceneTextures.end() != iter)
 	{
 		if (TextureSaveType::STATIC == _saveType)
 			mStaticTextures.emplace(*iter);
@@ -22,7 +22,7 @@ std::shared_ptr<class Texture> TextureManager::ReuseTexture(const std::wstring& 
 		return iter->second;
 	}
 
-	std::shared_ptr<class Texture> texture = Texture::CreateOrigin(_textureFilePath, _numTextures);
+	Texture* texture = Texture::CreateOrigin(_textureFilePath, _numTextures);
 	
 	switch (_saveType)
 	{
@@ -30,7 +30,7 @@ std::shared_ptr<class Texture> TextureManager::ReuseTexture(const std::wstring& 
 		mStaticTextures.emplace(_textureFilePath, texture);
 		break;
 	case Engine::TextureManager::TextureSaveType::CLEAR:
-		mLevelTextures.emplace(_textureFilePath, texture);
+		mSceneTextures.emplace(_textureFilePath, texture);
 		break;
 	default:
 		__debugbreak();
@@ -38,10 +38,15 @@ std::shared_ptr<class Texture> TextureManager::ReuseTexture(const std::wstring& 
 		break;
 	}
 
+	Utility::SafeAddRef(texture);
+
 	return texture;
 }
 
 void TextureManager::ClearLevelTextures()
 {
-	mLevelTextures.clear();
+	for (auto& texture : mSceneTextures)
+		Utility::SafeRelease(texture.second);
+
+	mSceneTextures.clear();
 }

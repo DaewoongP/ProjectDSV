@@ -7,15 +7,14 @@ class ENGINE_DLL RectBuffer : public VIBuffer
 {
 public:
 	RectBuffer();
-	RectBuffer(const RectBuffer& rhs);
 	virtual ~RectBuffer() = default;
 
 public:
-	HRESULT InitializePrototype();
+	void Initialize();
 
 public:
-	static std::shared_ptr<RectBuffer> Create();
-	std::shared_ptr<Component> Clone(void* _arg) override;
+	static RectBuffer* Create();
+	virtual void Free() override;
 };
 
 END

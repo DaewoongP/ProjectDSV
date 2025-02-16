@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 
+class Texture;
 class TextureManager
 {
 	DECLARE_SINGLETON(TextureManager)
@@ -14,12 +15,12 @@ public:
 	~TextureManager() = default;
 
 public:
-	std::shared_ptr<class Texture> ReuseTexture(const std::wstring& _textureFilePath, _uint _numTextures = 1, TextureSaveType _saveType = TextureSaveType::CLEAR);
+	Texture* ReuseTexture(const std::wstring& _textureFilePath, _uint _numTextures = 1, TextureSaveType _saveType = TextureSaveType::CLEAR);
 	void ClearLevelTextures();
 
 private:
-	_umap<std::wstring, std::shared_ptr<class Texture>>	mStaticTextures;
-	_umap<std::wstring, std::shared_ptr<class Texture>>	mLevelTextures;
+	_umap<std::wstring, Texture*>	mStaticTextures;
+	_umap<std::wstring, Texture*>	mSceneTextures;
 };
 
 END

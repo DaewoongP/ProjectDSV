@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "Shader.h"
+#include "GameInstance.h"
 
 USING(Engine)
 
@@ -8,14 +9,7 @@ Texture::Texture()
 {
 }
 
-Texture::Texture(const Texture& rhs)
-	: Component(rhs)
-	, mNumTexture(rhs.mNumTexture)
-	, mTextures(rhs.mTextures)
-{
-}
-
-HRESULT Texture::InitializePrototype(const std::wstring& _textureFilePath, _uint _numTexture)
+HRESULT Texture::Initialize(const std::wstring& _textureFilePath, _uint _numTexture)
 {
 	mNumTexture = _numTexture;
 	mTextures.reserve(_numTexture);
@@ -36,7 +30,7 @@ HRESULT Texture::InitializePrototype(const std::wstring& _textureFilePath, _uint
 
 		if (!lstrcmp(ext, TEXT(".dds")))
 		{
-			hr = CreateDDSTextureFromFile(GetDevice().Get(), inputPath, nullptr, &shaderResourceView);
+			hr = CreateDDSTextureFromFile(GAME->GetDevice().Get(), inputPath, nullptr, &shaderResourceView);
 		}
 		else if (!lstrcmp(ext, TEXT(".tga")))
 		{
@@ -45,7 +39,7 @@ HRESULT Texture::InitializePrototype(const std::wstring& _textureFilePath, _uint
 		}
 		else
 		{
-			hr = CreateWICTextureFromFile(GetDevice().Get(), inputPath, nullptr, &shaderResourceView);
+			hr = CreateWICTextureFromFile(GAME->GetDevice().Get(), inputPath, nullptr, &shaderResourceView);
 		}
 
 		FAILED_CHECK_RETURN_MSG(hr, E_FAIL, TEXT("Failed"));
@@ -67,22 +61,15 @@ HRESULT Texture::BindShaderResources(std::shared_ptr<class Shader> _shader, cons
 	return _shader->BindShaderResources(_constantName, mTextures.data(), mNumTexture);
 }
 
-std::shared_ptr<Texture> Texture::Create(const std::wstring& _textureFilePath, _uint _numTexture, TextureManager::TextureSaveType _saveType)
+Texture* Texture::Create(const std::wstring& _textureFilePath, _uint _numTexture, TextureManager::TextureSaveType _saveType)
 {
 	auto instance = TEXTURE->ReuseTexture(_textureFilePath, _numTexture, _saveType);
 	return instance;
 }
 
-std::shared_ptr<Texture> Texture::CreateOrigin(const std::wstring& _textureFilePath, _uint _numTexture)
+Texture* Texture::CreateOrigin(const std::wstring& _textureFilePath, _uint _numTexture)
 {
-	auto instance = std::make_shared<Texture>();
-	FAILED_CHECK_RETURN_MSG(instance->InitializePrototype(_textureFilePath, _numTexture), nullptr, TEXT("Failed"));
-	return instance;
-}
-
-std::shared_ptr<Component> Texture::Clone(void* _arg)
-{
-	auto instance = std::make_shared<Texture>(*this);
-	FAILED_CHECK_RETURN_MSG(instance->Initialize(_arg), nullptr, TEXT("Failed"));
+	auto instance = new Texture();
+	FAILED_CHECK_RETURN_MSG(instance->Initialize(_textureFilePath, _numTexture), nullptr, TEXT("Failed"));
 	return instance;
 }

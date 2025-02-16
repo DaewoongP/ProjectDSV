@@ -40,17 +40,8 @@
     <Filter Include="01. Utility\01. Component">
       <UniqueIdentifier>{64df8de5-14b1-453a-a5b4-a09d0b4a56af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\01. Component\00. Manager">
-      <UniqueIdentifier>{c2e78ed2-5825-4c3d-ace4-3fce0112873d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\01. Component\01. Composite">
       <UniqueIdentifier>{50e5d1a5-f4f1-4fda-bda0-2a8d1ca22532}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. Level">
-      <UniqueIdentifier>{ce744fc5-4fb6-489d-bff2-228b6868e021}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. Level\Manager">
-      <UniqueIdentifier>{271179f8-1cec-4d22-9b1f-56018b12c02e}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\04. Font">
       <UniqueIdentifier>{77638309-ee61-4065-a1b2-728a86479100}</UniqueIdentifier>
@@ -81,6 +72,12 @@
     </Filter>
     <Filter Include="01. Utility\01. Component\05. UI">
       <UniqueIdentifier>{d71cae8b-9c45-49c6-aff7-448958f825b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\99. Base">
+      <UniqueIdentifier>{b8d62366-e855-4565-a725-b774aba8fac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\01. Component\00. Scene">
+      <UniqueIdentifier>{ce744fc5-4fb6-489d-bff2-228b6868e021}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,17 +147,11 @@
     <ClInclude Include="..\public\Component.h">
       <Filter>01. Utility\01. Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ComponentManager.h">
-      <Filter>01. Utility\01. Component\00. Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Composite.h">
       <Filter>01. Utility\01. Component\01. Composite</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Level.h">
-      <Filter>01. Utility\02. Level</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\LevelManager.h">
-      <Filter>01. Utility\02. Level\Manager</Filter>
+    <ClInclude Include="..\public\Scene.h">
+      <Filter>01. Utility\01. Component\00. Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Function.h">
       <Filter>99. Headers</Filter>
@@ -185,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="..\public\UI.h">
       <Filter>01. Utility\01. Component\05. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Base.h">
+      <Filter>01. Utility\99. Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -236,17 +230,11 @@
     <ClCompile Include="..\private\Component.cpp">
       <Filter>01. Utility\01. Component</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ComponentManager.cpp">
-      <Filter>01. Utility\01. Component\00. Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Composite.cpp">
       <Filter>01. Utility\01. Component\01. Composite</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Level.cpp">
-      <Filter>01. Utility\02. Level</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\LevelManager.cpp">
-      <Filter>01. Utility\02. Level\Manager</Filter>
+    <ClCompile Include="..\private\Scene.cpp">
+      <Filter>01. Utility\01. Component\00. Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RenderManager.cpp">
       <Filter>01. Utility\03. Rendering\00. Manager</Filter>
@@ -271,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI.cpp">
       <Filter>01. Utility\01. Component\05. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Base.cpp">
+      <Filter>01. Utility\99. Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

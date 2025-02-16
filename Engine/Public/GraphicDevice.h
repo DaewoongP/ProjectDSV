@@ -41,4 +41,4 @@ private:
 
 END
 
-#define GRAPHIC		GET_SINGLE(Engine::GraphicDevice)
+#define GRAPHIC			GET_SINGLE(Engine::GraphicDevice)

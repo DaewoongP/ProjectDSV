@@ -30,10 +30,10 @@ public:
 	void		Tick(_float _timeDelta);
 
 private:
-	std::shared_ptr<Timer> FindTimer(const std::wstring& _timerTag);
+	Timer* FindTimer(const std::wstring& _timerTag);
 
 private:
-	_umap<std::wstring, std::shared_ptr<Timer>>	mTimers;
+	_umap<std::wstring, Timer*>		mTimers;
 
 private:
 	std::vector<FUNCTIMER>			mFunctionTimers;
